@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HD Wallet - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body onload="logOut();">
+    <main>
+        <h1>Login to Your Wallet</h1>
+        <form id="loginForm" onsubmit="event.preventDefault(); login();">
+            <label for="loginUsername">Username</label>
+            <input type="text" id="loginUsername" required />
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required />
+            <button type="submit">Login</button>
+            <p>
+              Don't have a wallet? <a href="CreateWallet.html">Create Wallet</a>
+            </p>
+            <p>or <a href="RestoreAccount.html">Restore Wallet</a></p>
+        </form>
+        <div id="loginResult"></div>
+    </main>
+    <!-- Include JavaScript for login functionality -->
+    <script src="lightwallet.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
+    <script src="mainsfuncs.js"></script>
+</body>
+</html>
