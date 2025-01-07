@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,11 +25,46 @@
         </div>
         <div id="accountAddress"></div>
         <div id="seedPhraseDisplay"></div>
+=======
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HD Wallet - Create Wallet</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/wallet.css"> <!-- Link to external CSS -->
+
+  </head>
+
+  <body>
+    <main>
+      <h1>Create a New Wallet</h1>
+      <div id="usernameDisplay"></div>
+      <form id="createAccountForm">
+        <label for="username">Username</label>
+        <input type="text" id="username" required />
+        <label for="password">Password</label>
+        <input type="password" id="password" required />
+        <button type="submit">Create Wallet</button>
+        <p>Already have a wallet? <a href="login.html">Login</a></p>
+      </form>
+      <div class="button-group">
+        <button onclick="goToHome()">Go To App</button>
+      </div>
+      <div id="accountAddress"></div>
+      <div id="seedPhraseDisplay"></div>
+>>>>>>> c681791 (cleaning the code)
     </main>
 
     <script src="/lightwallet.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
     <script src="/mainsfuncs.js"></script>
+<<<<<<< HEAD
+=======
+
+>>>>>>> c681791 (cleaning the code)
     <script>
       function goToHome() {
         window.location.href = "index.html";
@@ -48,5 +84,9 @@
         localStorage.setItem("userData", JSON.stringify(allUsers));
       };
     </script>
+<<<<<<< HEAD
 </body>
+=======
+  </body>
+>>>>>>> c681791 (cleaning the code)
 </html>
