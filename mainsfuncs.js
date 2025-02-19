@@ -12,6 +12,8 @@ var web3AVAX = new Web3(
   "https://avalanche-fuji.infura.io/v3/f4a064381a4145aea1b2bfd4bd620456"
 );
 
+
+
 /**
  * Function to handle user login.
  */

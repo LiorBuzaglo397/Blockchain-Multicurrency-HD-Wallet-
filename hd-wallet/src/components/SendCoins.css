@@ -1,0 +1,65 @@
+.send-coins-container {
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    margin: auto;
+    margin-top: 80px;
+  }
+  
+  h1 {
+    color: #2d9cdb;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  input,
+  select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: border 0.3s;
+    font-size: 14px;
+  }
+  
+  input:focus,
+  select:focus {
+    border-color: #2d9cdb;
+    box-shadow: 0 0 8px rgba(45, 156, 219, 0.5);
+  }
+  
+  button {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    background-color: #2d9cdb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #56ccf2;
+  }
+  
+  .message {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+  }
+  

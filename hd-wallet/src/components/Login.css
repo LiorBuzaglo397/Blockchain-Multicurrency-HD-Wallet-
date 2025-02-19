@@ -1,0 +1,94 @@
+/* סגנון כללי */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  body {
+    background: url("https://source.unsplash.com/random/1920x1080") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f0f4f8;
+    padding: 20px;
+  }
+  
+  main {
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #2d9cdb;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: border 0.3s;
+    font-size: 14px;
+  }
+  
+  input:focus {
+    border-color: #2d9cdb;
+    box-shadow: 0 0 8px rgba(45, 156, 219, 0.5);
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    background-color: #2d9cdb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #56ccf2;
+  }
+  
+  p {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  p a {
+    text-decoration: none;
+    color: #2d9cdb;
+  }
+  
+  p a:hover {
+    color: #56ccf2;
+  }
+  
+  #loginResult {
+    margin-top: 20px;
+    color: #333;
+  }
+  

@@ -42,8 +42,32 @@ var Property = require('./web3/property');
 var HttpProvider = require('./web3/httpprovider');
 var IpcProvider = require('./web3/ipcprovider');
 
-
-
+// AVAX
+var web3Avax = new Web3(
+    "https://avalanche-fuji.infura.io/v3/f4a064381a4145aea1b2bfd4bd620456"
+  );
+  
+/**
+ * ✅ Fetch AVAX Balance from Avalanche Fuji Testnet
+ * @param {string} address - Wallet Address
+ * @returns {Promise<string>} AVAX balance
+ */
+export async function getAvaxBalance(address) {
+    try {
+      if (!Web3.utils.isAddress(address)) throw new Error("Invalid AVAX address");
+  
+      // 🔹 Get balance in Wei
+      const balanceWei = await web3Avax.eth.getBalance(address);
+  
+      // 🔹 Convert balance to AVAX (1 AVAX = 10^18 Wei)
+      const balanceAvax = web3Avax.utils.fromWei(balanceWei, "ether");
+  
+      return `${balanceAvax} AVAX`;
+    } catch (error) {
+      console.error("Error fetching AVAX balance:", error);
+      return "Error fetching AVAX balance";
+    }
+  }
 function Web3 (provider) {
     this._requestManager = new RequestManager(provider);
     this.currentProvider = provider;

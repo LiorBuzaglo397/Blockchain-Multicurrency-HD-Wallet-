@@ -1,22 +1,18 @@
 {
-<<<<<<< HEAD
-  "name": "node.js",
-=======
-  "name": "blockchain-multicurrency-hd-wallet-",
->>>>>>> c681791 (cleaning the code)
+  "name": "blockchain-multicurrency-hd-wallet",
   "version": "1.0.0",
   "description": "",
-  "main": "hooked-web3-provider.min.js",
+  "main": "index.html",
   "scripts": {
+    "start": "index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-<<<<<<< HEAD
-  "license": "ISC"
-=======
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.7.9"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "axios": "^1.7.9",
+    "web3": "^1.10.4"
   }
->>>>>>> c681791 (cleaning the code)
 }
