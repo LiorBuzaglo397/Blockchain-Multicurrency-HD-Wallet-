@@ -1,71 +1,99 @@
-// blockchain.js
-const API_KEY = process.env.REACT_APP_NOWNODES_API_KEY;
+import Web3 from "web3";
 
-const ETH_NODE_URL = "https://eth-goerli.nownodes.io/v1";
-const ETH_EXPLORER_URL = "https://ethbook-goerli.nownodes.io/v1";
-const LTC_NODE_URL = "https://ltc-testnet.nownodes.io/v1";
-const LTC_EXPLORER_URL = "https://ltcbook-testnet.nownodes.io/v1";
+// 🔧 Infura API Key
+const INFURA_API_KEY = "8556c67194bc4af989e4a0876f20a8ab";
 
-// יצירת ארנק עם NOWNODES
-export function createOrRestoreAccount(mnemonic, coin) {
-  let baseUrl = coin === "ETH" ? ETH_NODE_URL : LTC_NODE_URL;
-  let url = `${baseUrl}/account/create?mnemonic=${mnemonic}&coin=${coin}&key=${API_KEY}`;
+// ✅ RPC URLs
+const SEPOLIA_RPC_URL = `https://sepolia.infura.io/v3/${INFURA_API_KEY}`;
+const AVAX_RPC_URL = `https://avalanche-fuji.infura.io/v3/${INFURA_API_KEY}`;
+const MTW_RPC_URL = "https://net.mtw-testnet.com";
 
-  return fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        return { address: data.data.address, nodeUrl: baseUrl };
-      } else {
-        throw new Error(data.error || "Failed to create account");
-      }
-    });
+// ✅ Blockchain Explorers (for transactions)
+const ETHERSCAN_API_KEY = "ZU65QFWEEJYCFB4ZSR4I4I6FPXT4YWHCA3";
+const AVAXSCAN_API_KEY = "YOUR_AVAXSCAN_API_KEY";
+const MTW_EXPLORER_URL = "https://blockexplorer.morethanwallet.com/api";
+
+// ✅ Web3 Instances
+const web3Eth = new Web3(new Web3.providers.HttpProvider(SEPOLIA_RPC_URL));
+const web3Avax = new Web3(new Web3.providers.HttpProvider(AVAX_RPC_URL));
+const web3Mtw = new Web3(new Web3.providers.HttpProvider(MTW_RPC_URL));
+
+/**
+ * ✅ Fetch account balance for ETH, AVAX, or MTW
+ * @param {string} coin - "ETH" | "AVAX" | "MTW"
+ * @param {string} address - Wallet address
+ * @returns {Promise<string>} - Balance in respective token
+ */
+export async function checkBalance(coin, address) {
+  if (!address) throw new Error("❌ Address is required!");
+
+  try {
+    let balanceWei;
+    if (coin === "ETH") {
+      balanceWei = await web3Eth.eth.getBalance(address);
+    } else if (coin === "AVAX") {
+      balanceWei = await web3Avax.eth.getBalance(address);
+    } else if (coin === "MTW") {
+      balanceWei = await web3Mtw.eth.getBalance(address);
+    } else {
+      throw new Error("❌ Invalid coin type");
+    }
+
+    const balance = Web3.utils.fromWei(balanceWei, "ether");
+    console.log(`✅ ${coin} balance: ${balance}`);
+    return balance;
+  } catch (error) {
+    console.error(`❌ Error fetching balance for ${coin}:`, error.message);
+    return "Error fetching balance";
+  }
 }
 
-// בדיקת יתרה
-export function checkBalances(coin) {
-  let baseUrl = coin === "ETH" ? ETH_NODE_URL : LTC_NODE_URL;
-  let url = `${baseUrl}/account/balance?coin=${coin}&key=${API_KEY}`;
+/**
+ * ✅ Fetch transaction history for ETH, AVAX, or MTW
+ * @param {string} coin - "ETH" | "AVAX" | "MTW"
+ * @param {string} address - Wallet address
+ * @returns {Promise<Object[]>} - Array of transactions
+ */
+export async function getTransactionHistory(coin, address) {
+  if (!address) throw new Error("🚨 Missing wallet address");
 
-  return fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        return data.data.balances;
-      } else {
-        throw new Error(data.error);
-      }
-    });
+  let explorerUrl;
+  if (coin === "ETH") {
+    explorerUrl = `https://api-sepolia.etherscan.io/api?module=account&action=txlist&address=${address}&apikey=${ETHERSCAN_API_KEY}`;
+  } else if (coin === "AVAX") {
+    explorerUrl = `https://api.snowtrace.io/api?module=account&action=txlist&address=${address}&apikey=${AVAXSCAN_API_KEY}`;
+  } else if (coin === "MTW") {
+    explorerUrl = `${MTW_EXPLORER_URL}?module=account&action=txlist&address=${address}`;
+  } else {
+    throw new Error("❌ Invalid coin type");
+  }
+
+  try {
+    const response = await fetch(explorerUrl);
+    const data = await response.json();
+    if (!data.result) throw new Error("❌ Failed to fetch transactions");
+    console.log(`✅ ${coin} Transactions:`, data.result);
+    return data.result;
+  } catch (error) {
+    console.error(`❌ Error fetching transactions for ${coin}:`, error);
+    return [];
+  }
 }
 
-// שליחת עסקה
-export function sendSignedTransaction(coin, recipient, amount) {
-  let baseUrl = coin === "ETH" ? ETH_NODE_URL : LTC_NODE_URL;
-  let url = `${baseUrl}/transaction/send?coin=${coin}&recipient=${recipient}&amount=${amount}&key=${API_KEY}`;
-
-  return fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        return data.data.txid;
-      } else {
-        throw new Error(data.error);
-      }
-    });
+/**
+ * ✅ Fetch MTW Balance
+ * @param {string} address - Wallet address
+ * @returns {Promise<string>} - Balance in wETH (MTW)
+ */
+export async function checkMtwBalance(address) {
+  return checkBalance("MTW", address);
 }
 
-// היסטוריית עסקאות
-export function getTransactionHistory(coin) {
-  let baseUrl = coin === "ETH" ? ETH_EXPLORER_URL : LTC_EXPLORER_URL;
-  let url = `${baseUrl}/transactions?coin=${coin}&key=${API_KEY}`;
-
-  return fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        return data.data;
-      } else {
-        throw new Error(data.error);
-      }
-    });
+/**
+ * ✅ Fetch MTW Transaction History
+ * @param {string} address - Wallet address
+ * @returns {Promise<Object[]>} - Transaction history array
+ */
+export async function getMtwTransactionHistory(address) {
+  return getTransactionHistory("MTW", address);
 }

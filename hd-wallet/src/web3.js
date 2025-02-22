@@ -44,7 +44,7 @@ var IpcProvider = require('./web3/ipcprovider');
 
 // AVAX
 var web3Avax = new Web3(
-    "https://avalanche-fuji.infura.io/v3/f4a064381a4145aea1b2bfd4bd620456"
+    "https://avalanche-fuji.infura.io/v3/8556c67194bc4af989e4a0876f20a8ab"
   );
   
 /**
@@ -167,4 +167,3 @@ Web3.prototype.createBatch = function () {
 };
 
 module.exports = Web3;
-

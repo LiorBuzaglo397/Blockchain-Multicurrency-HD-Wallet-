@@ -7990,7 +7990,7 @@
 
             var bitcore = module.exports; // module information
 
-            bitcore.version = "v" + require("./package.json").version;
+            bitcore.version = "v" + require("../../package.json").version;
 
             bitcore.versionGuard = function (version) {
               if (version !== undefined) {

@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../UserContext";
 import "./Login.css";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useUser();
   const navigate = useNavigate();
 
   function handleLogin(event) {
     event.preventDefault();
-    
-    // כאן נשמור את המשתמש ב-localStorage לדמות אימות
-    localStorage.setItem("user", JSON.stringify({ username, password }));
 
-    // נוודא שהמשתמש מועבר לדף Wallet
+    const userWallet = {
+      username,
+      password,
+      address: generateWalletAddress(username), // יצירת כתובת מהשם
+    };
+
+    localStorage.setItem("userData", JSON.stringify(userWallet));
+    login(userWallet);
     navigate("/wallet");
   }
 
@@ -25,6 +31,7 @@ function Login() {
         <input
           type="text"
           id="loginUsername"
+          value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
         />
@@ -32,6 +39,7 @@ function Login() {
         <input
           type="password"
           id="loginPassword"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
@@ -42,5 +50,10 @@ function Login() {
     </main>
   );
 }
+
+// ✅ פונקציה ליצירת כתובת (משתמשת בכתובת דמו קבועה)
+const generateWalletAddress = (username) => {
+  return "0xe3A2DF8A9b49485d6E3f3d66C87eD6C128D20DA7"; // כתובת לדוגמא
+};
 
 export default Login;

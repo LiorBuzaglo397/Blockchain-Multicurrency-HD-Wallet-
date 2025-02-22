@@ -3,12 +3,16 @@ import { Container, Navbar, Nav, Dropdown, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
+// Assuming you have a context or a way to manage global state
+import { useUser } from "../UserContext"; // Use the custom hook for accessing user context
+
 function NavigationBar() {
   const navigate = useNavigate();
+  const { logout } = useUser(); // Destructure logout directly from the context
 
   const logOut = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
+    logout(); // Use the logout function from context
+    navigate("/"); // Navigate to home page after logout
   };
 
   return (
