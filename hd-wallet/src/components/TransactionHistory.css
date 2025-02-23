@@ -10,6 +10,14 @@ body {
   padding: 20px;
   font-family: "Poppins", sans-serif;
 }
+/* ✅ וודא שהרקע מכסה את כל הדף */
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: url("https://cdn.britannica.com/68/235768-050-2482F9B5/Three-diagonal-digital-chains-on-a-blue-background.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
 
 /* Centered Transaction History Container */
 .transaction-history-container {

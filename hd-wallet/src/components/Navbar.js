@@ -1,36 +1,31 @@
 import React from "react";
-import { Container, Navbar, Nav, Dropdown, Button } from "react-bootstrap";
+import { Container, Navbar, Nav, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "./Navbar.css";
-
-// Assuming you have a context or a way to manage global state
-import { useUser } from "../UserContext"; // Use the custom hook for accessing user context
+import "./Navbar.css"; // קובץ CSS מותאם אישית
+import { useUser } from "../UserContext"; // שימוש בהקשר המשתמש
 
 function NavigationBar() {
   const navigate = useNavigate();
-  const { logout } = useUser(); // Destructure logout directly from the context
+  const { logout, user } = useUser(); // משתמש מחובר
 
   const logOut = () => {
-    logout(); // Use the logout function from context
-    navigate("/"); // Navigate to home page after logout
+    logout();
+    navigate("/");
   };
 
   return (
-    <Navbar bg="light" expand="lg" fixed="top" className="shadow-sm">
-      <Container>
-        <Navbar.Brand href="/">HD Wallet</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            <Nav.Link href="/wallet">Home</Nav.Link>
-            <Dropdown>
-              <Dropdown.Toggle variant="outline-primary">Wallet Actions</Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="/send-coins">Send Coins</Dropdown.Item>
-                <Dropdown.Item href="/transaction-history">Transaction History</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-            <Button variant="danger" className="ms-3" onClick={logOut}>
+    <Navbar expand="lg" fixed="top" className="custom-navbar shadow-sm">
+      <Container className="d-flex justify-content-center">
+        <Navbar.Brand className="fw-bold text-light mx-auto" href="/">
+          HD Wallet
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" className="border-0 bg-light" />
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
+          <Nav className="d-flex align-items-center gap-4">
+            <Nav.Link className="nav-link-custom" href="/wallet">Home</Nav.Link>
+            <Nav.Link className="nav-link-custom" href="/send-coins">Send Coins</Nav.Link>
+            <Nav.Link className="nav-link-custom" href="/transaction-history">Transactions</Nav.Link>
+            <Button variant="outline-light" className="fw-bold logout-btn" onClick={logOut}>
               Log Out
             </Button>
           </Nav>

@@ -1,17 +1,39 @@
-.navbar {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .navbar-brand {
-    font-weight: bold;
-    font-size: 1.5rem;
-  }
-  
-  .navbar-nav .nav-link {
-    font-size: 1.1rem;
-  }
-  
-  .dropdown-menu {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
+/* 🎨 עיצוב ניווט */
+.custom-navbar {
+  background-color: #007bff; /* כחול יפה */
+  padding: 12px 20px;
+}
+
+/* צבע קישורים */
+.nav-link-custom {
+  color: white !important;
+  font-weight: 500;
+  margin-right: 15px;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link-custom:hover {
+  color: #ffdd57 !important;
+}
+
+/* שם משתמש */
+.nav-username {
+  color: white;
+  font-weight: bold;
+  margin-left: 20px;
+  font-size: 1rem;
+}
+
+/* כפתור יציאה */
+.logout-btn {
+  border-radius: 25px;
+  padding: 6px 15px;
+  border: 2px solid white;
+  transition: all 0.3s ease-in-out;
+}
+
+.logout-btn:hover {
+  background-color: #ff4b5c;
+  border-color: #ff4b5c;
+  color: white;
+}

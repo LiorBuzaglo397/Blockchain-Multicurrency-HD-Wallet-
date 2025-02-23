@@ -45,27 +45,29 @@ export function logOut() {
 
   localStorage.setItem("userData", JSON.stringify(allUsers));
 }
-export function restoreAccount(seedPhraseInput, newPassword) {
-    var allUsers = JSON.parse(localStorage.getItem("userData")) || [];
-  
-    var loggedInUser = allUsers.find((user) => user.isLoggedIn);
-    if (loggedInUser) {
-      return "A user is already logged in";
-    }
-  
-    var user = allUsers.find((user) => user.seedPhrase === seedPhraseInput);
-  
-    if (user) {
-      user.password = newPassword;
-      user.isLoggedIn = true;
-      localStorage.setItem("userData", JSON.stringify(allUsers));
-      return "Successfully logged in, password is restored!";
-    } else {
-      return "No user found with the given seed phrase";
-    }
+export function restoreAccount(seedPhrase, newPassword) {
+  let allUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+  // 🔹 בדיקה אם allUsers הוא מערך, אם לא - יוצרים מערך ריק
+  if (!Array.isArray(allUsers)) {
+      allUsers = [];
   }
 
+  // 🔍 חיפוש משתמש לפי ה-Seed Phrase
+  const userWallet = allUsers.find((user) => user.seedPhrase === seedPhrase);
 
+  if (!userWallet) {
+      return "❌ Seed Phrase not found! Please try again.";
+  }
+
+  // 🔄 עדכון סיסמה ושמירה ב- localStorage
+  userWallet.password = newPassword;
+  userWallet.isLoggedIn = true;
+  localStorage.setItem("users", JSON.stringify(allUsers));
+  localStorage.setItem("currentUser", JSON.stringify(userWallet));
+
+  return "✅ Account restored successfully! Redirecting...";
+}
 
   /**
    * ✅ Send Coins

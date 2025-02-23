@@ -1,65 +1,86 @@
+/* ✅ מוודא שהקונטיינר יכסה את כל הדף */
 .send-coins-container {
-    background-color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 40px;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    margin: auto;
-    margin-top: 80px;
+  position: absolute;
+  top: 80px; /* בדיוק מתחת ל-Navbar */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 850px; /* ✅ טיפה יותר רחב */
+  min-height: 75vh; /* ✅ גובה מספיק לתוכן */
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.85); /* ✅ רקע שקוף כמו בדפים האחרים */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* ✅ כותרות בעיצוב תואם */
+h3 {
+  color: #007bff;
+  margin-bottom: 15px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* ✅ עיצוב לתוויות */
+label {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+/* ✅ שדות קלט גדולים עם עיצוב אחיד */
+input, select {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  transition: border 0.3s ease;
+}
+
+/* ✅ שינוי צבע בעת התמקדות */
+input:focus, select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
+/* ✅ כפתור שליחה בעיצוב מודרני */
+button {
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* ✅ הודעות בעיצוב תואם */
+.alert {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ✅ סגנון רספונסיבי למובייל */
+@media (max-width: 768px) {
+  .send-coins-container {
+    width: 90%;
+    max-width: 100%;
+    min-height: auto;
+    padding: 20px;
   }
-  
-  h1 {
-    color: #2d9cdb;
-    margin-bottom: 20px;
-    font-size: 24px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-weight: 600;
-  }
-  
-  input,
-  select {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    transition: border 0.3s;
-    font-size: 14px;
-  }
-  
-  input:focus,
-  select:focus {
-    border-color: #2d9cdb;
-    box-shadow: 0 0 8px rgba(45, 156, 219, 0.5);
-  }
-  
-  button {
-    width: 100%;
-    padding: 12px;
-    color: white;
-    background-color: #2d9cdb;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+
+  input, select, button {
     font-size: 16px;
-    transition: background-color 0.3s;
-    margin-top: 20px;
+    padding: 12px;
   }
-  
-  button:hover {
-    background-color: #56ccf2;
-  }
-  
-  .message {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #666;
-  }
-  
+}

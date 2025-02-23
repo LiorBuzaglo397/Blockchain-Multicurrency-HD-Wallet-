@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../UserContext";
 import { getTransactionHistory } from "../blockchain";
-import { Container, Table, Card, Alert } from "react-bootstrap";
+import { Container, Table, Card, Alert, Row, Col } from "react-bootstrap";
 import CustomNavbar from "../components/Navbar";
 
 function TransactionHistory() {
@@ -37,58 +37,71 @@ function TransactionHistory() {
 
   return (
     <div>
-      {/* ✅ ניווט עליון */}
       <CustomNavbar />
 
-      <Container className="mt-5 pt-5">
-        <Card className="shadow-lg p-4">
-          <Card.Body>
-            <h3 className="text-primary text-center mb-4">Transaction History</h3>
+      <Container className="mt-3 pt-3">
+        <Row className="justify-content-center">
+          <Col xs={12} md={25} lg={45}>
+            <Card className="shadow-lg p-4 rounded-4" style={{ minHeight: "70vh" }}>
+              <Card.Body>
+                <h3 className="text-primary text-center">My Wallet</h3>
+                <p className="text-muted text-center">
+                  Logged in as: <strong>{user?.username || "Unknown User"}</strong>
+                </p>
 
-            {/* ✅ הודעת שגיאה במקרה הצורך */}
-            {error && <Alert variant="danger">{error}</Alert>}
+                <h3 className="text-primary text-center mb-4">Transaction History</h3>
 
-            {/* ✅ טבלה של עסקאות */}
-            <div className="table-responsive">
-              <Table striped bordered hover className="mt-3 text-center">
-                <thead className="bg-light">
-                  <tr>
-                    <th>#</th>
-                    <th>Transaction Hash</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Amount (ETH)</th>
-                    <th>Currency</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transactions.length > 0 ? (
-                    transactions.map((tx, index) => (
-                      <tr key={tx.hash || index}>
-                        <td>{index + 1}</td>
-                        <td className="text-truncate" style={{ maxWidth: "150px" }}>
-                          {tx.hash ? tx.hash.slice(0, 15) + "..." : "N/A"}
-                        </td>
-                        <td className="text-muted">{tx.from || "N/A"}</td>
-                        <td className="text-muted">{tx.to || "N/A"}</td>
-                        <td className="text-success">
-                          {tx.value ? (parseFloat(tx.value) / 10 ** 18).toFixed(6) : "N/A"}
-                        </td>
-                        <td>ETH</td>
+                {error && <Alert variant="danger" className="text-center">{error}</Alert>}
+
+                <div className="table-responsive" style={{ overflowX: "auto", minHeight: "50vh" }}>
+                  <Table striped bordered hover className="mt-3 text-center">
+                    <thead className="bg-light">
+                      <tr>
+                        <th>#</th>
+                        <th>Transaction Hash</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Amount (ETH)</th>
+                        <th>Currency</th>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="6" className="text-center text-muted">
-                        No transactions found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </Table>
-            </div>
-          </Card.Body>
-        </Card>
+                    </thead>
+                    <tbody>
+                      {transactions.length > 0 ? (
+                        transactions.map((tx, index) => (
+                          <tr key={tx.hash || index}>
+                            <td>{index + 1}</td>
+                            <td>
+                              <a
+                                href={`https://sepolia.etherscan.io/tx/${tx.hash}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-break text-decoration-none"
+                              >
+                                {tx.hash ? tx.hash.slice(0, 10) + "..." : "N/A"}
+                              </a>
+                            </td>
+                            <td className="text-muted">{tx.from || "N/A"}</td>
+                            <td className="text-muted">{tx.to || "N/A"}</td>
+                            <td className="text-success">
+                              {tx.value ? (parseFloat(tx.value) / 10 ** 18).toFixed(6) : "N/A"}
+                            </td>
+                            <td>ETH</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="6" className="text-center text-muted">
+                            No transactions found.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </Table>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Container>
     </div>
   );

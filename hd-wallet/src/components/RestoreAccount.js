@@ -20,11 +20,17 @@ function RestoreAccount() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const fullSeedPhrase = seedPhrase.join(" ").trim();
-    const result = restoreAccount(fullSeedPhrase, newPassword);
-    setMessage(result);
-
-    if (result.includes("Successfully")) {
-      setTimeout(() => navigate("/wallet"), 2000);
+  
+    try {
+      const result = restoreAccount(fullSeedPhrase, newPassword);
+      setMessage(result);
+  
+      if (result.includes("✅")) {
+        setTimeout(() => navigate("/wallet"), 2000);
+      }
+    } catch (error) {
+      setMessage("❌ Error restoring account. Please try again.");
+      console.error("Restore Error:", error);
     }
   };
 

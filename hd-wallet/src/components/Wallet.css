@@ -1,142 +1,49 @@
-/* Global styles */
-* {
-  box-sizing: border-box;
+/* ✅ וודא שהרקע מכסה את כל הדף */
+body, html {
+  height: 100%;
   margin: 0;
   padding: 0;
-  font-family: "Poppins", sans-serif;
-}
-
-:root {
-  --primary-color: #2d9cdb;
-  --secondary-color: #56ccf2;
-  --background-color: #f0f4f8;
-  --text-color: #333;
-  --box-shadow-color: rgba(0, 0, 0, 0.1);
-  --input-focus-color: #2d9cdb;
-  --nav-background: #ffffff;
-  --main-background: #ffffff;
-  --nav-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --card-background: #ffffff;
-  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-body {
-  background: url("https://source.unsplash.com/random/1920x1080") no-repeat center center fixed;
+  background: url("https://cdn.britannica.com/68/235768-050-2482F9B5/Three-diagonal-digital-chains-on-a-blue-background.jpg") no-repeat center center fixed;
   background-size: cover;
+}
+
+/* ✅ קונטיינר עם רקע שקוף יותר וגובה מופחת */
+.full-page-card {
+  min-height: 70vh; /* הפחתת גובה הכרטיס */
+  max-width: 600px; /* מגביל את הרוחב */
+  background: rgba(255, 255, 255, 0.85); /* שקיפות מוגברת */
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  margin: auto; /* ממקם את הכרטיס באמצע */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding-top: 60px;
-  background-color: var(--background-color);
+  justify-content: center;
 }
 
-nav {
-  width: 100%;
-  background-color: var(--nav-background);
-  padding: 10px 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  box-shadow: var(--nav-shadow);
-  z-index: 3;
-}
-
-ul {
-  list-style-type: none;
+/* ✅ כרטיסי מידע ממורכזים */
+.crypto-prices {
   display: flex;
   justify-content: center;
-  padding: 0;
-}
-
-li {
-  margin: 0 15px;
-}
-
-a, button {
-  color: var(--primary-color);
-  text-decoration: none;
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-a:hover, button:hover {
-  color: var(--secondary-color);
-}
-
-main {
-  width: 80%;
-  max-width: 800px;
-  padding: 20px;
-  background-color: var(--main-background);
-  box-shadow: var(--card-shadow);
-  border-radius: 10px;
+  gap: 15px;
   margin-top: 20px;
+}
+
+.crypto-card {
+  padding: 12px;
+  min-width: 140px;
   text-align: center;
-}
-
-h1 {
-  margin: 20px 0;
-  color: var(--text-color);
-}
-
-.infoRow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: var(--card-background);
-  border-radius: 5px;
-  box-shadow: var(--card-shadow);
-}
-
-.infoRow span:first-child {
-  font-weight: 600;
-  color: var(--text-color);
-  margin-right: 10px;
-  flex: 1;
-}
-
-.infoRow span:last-child {
-  font-weight: 400;
-  color: var(--text-color);
-  word-wrap: break-word;
-  flex: 3;
-}
-
-#ethPriceBox, #avaxPriceBox {
-  position: fixed;
-  right: 20px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: var(--card-shadow);
-  border-radius: 10px;
-  font-size: 1em;
   font-weight: bold;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.9); /* שקיפות קלה */
 }
 
-#ethPriceBox {
-  top: 120px;
-  border: 1px solid gold;
+.crypto-card.eth {
+  border: 2px solid gold;
 }
 
-#avaxPriceBox {
-  top: 200px;
-  border: 1px solid #002f86;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: var(--primary-color);
-  color: white;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: var(--secondary-color);
+.crypto-card.avax {
+  border: 2px solid #002f86;
 }
