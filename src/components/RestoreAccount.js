@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { restoreAccount } from "../mainsfuncs";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Card, Button, Form, Row, Col } from "react-bootstrap";
-import CustomNavbar from "../components/Navbar"; // ✅ Import Custom Navbar
+import { Container, Card, Button, Form, Row, Col, InputGroup } from "react-bootstrap";
+import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 function RestoreAccount() {
   const [seedPhrase, setSeedPhrase] = useState(Array(12).fill(""));
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [showSeed, setShowSeed] = useState(false); // ✅ Toggle visibility
   const navigate = useNavigate();
 
   const handleChange = (index, value) => {
@@ -20,11 +21,11 @@ function RestoreAccount() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const fullSeedPhrase = seedPhrase.join(" ").trim();
-  
+
     try {
       const result = restoreAccount(fullSeedPhrase, newPassword);
       setMessage(result);
-  
+
       if (result.includes("✅")) {
         setTimeout(() => navigate("/wallet"), 2000);
       }
@@ -35,10 +36,7 @@ function RestoreAccount() {
   };
 
   return (
-    <div>
-      {/* ✅ Reusable Navbar */}
-
-      {/* Page Content with Padding */}
+    <div className="restore-account-page">
       <Container className="mt-5 pt-5 d-flex justify-content-center">
         <Card className="shadow-lg p-4 w-100" style={{ maxWidth: "600px" }}>
           <Card.Body>
@@ -50,16 +48,25 @@ function RestoreAccount() {
                 <Row>
                   {seedPhrase.map((word, index) => (
                     <Col key={index} xs={4} className="mb-2">
-                      <Form.Control
-                        type="text"
-                        placeholder={`Word ${index + 1}`}
-                        value={word}
-                        onChange={(e) => handleChange(index, e.target.value)}
-                        required
-                      />
+                      <InputGroup>
+                        <Form.Control
+                          type={showSeed ? "text" : "password"} // ✅ Toggle visibility
+                          placeholder={`Word ${index + 1}`}
+                          value={word}
+                          onChange={(e) => handleChange(index, e.target.value)}
+                          required
+                        />
+                      </InputGroup>
                     </Col>
                   ))}
                 </Row>
+                <Button
+                  variant="outline-secondary"
+                  className="mt-2"
+                  onClick={() => setShowSeed(!showSeed)}
+                >
+                  {showSeed ? <EyeSlash /> : <Eye />} {showSeed ? "Hide Seed" : "Show Seed"}
+                </Button>
               </Form.Group>
 
               <Form.Group className="mt-3">

@@ -13,7 +13,7 @@ function TransactionHistory() {
 
   useEffect(() => {
     if (!user) {
-      navigate("/login");
+      navigate("/");
       return;
     }
     fetchTransactions();
@@ -61,7 +61,7 @@ function TransactionHistory() {
                         <th>Transaction Hash</th>
                         <th>From</th>
                         <th>To</th>
-                        <th>Amount (ETH)</th>
+                        <th>Amount</th>
                         <th>Currency</th>
                       </tr>
                     </thead>

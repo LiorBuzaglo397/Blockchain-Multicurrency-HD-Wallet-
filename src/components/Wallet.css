@@ -3,7 +3,6 @@ body, html {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: url("https://cdn.britannica.com/68/235768-050-2482F9B5/Three-diagonal-digital-chains-on-a-blue-background.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -41,9 +40,32 @@ body, html {
 }
 
 .crypto-card.eth {
-  border: 2px solid gold;
+  border: 2px solid rgb(209, 123, 198);
 }
 
 .crypto-card.avax {
-  border: 2px solid #002f86;
+  border: 2px solid #b0809d;
+}
+
+/* ✅ Ensure Pink and Purple Text is Applied */
+.text-pink {
+  color: #daa0d1 !important;
+}
+
+.text-purple {
+  color: #ceacee !important; /* Strong purple */
+}
+
+/* ✅ Ensure Borders Are Applied */
+.border-pink {
+  border: 3px solid #daa0d1 !important;
+}
+
+.border-purple {
+  border: 3px solid #ceacee !important;
+}
+
+/* ✅ Make Sure Backgrounds Are Not Overriding */
+.bg-light {
+  background-color: rgba(255, 255, 255, 0.9) !important;
 }

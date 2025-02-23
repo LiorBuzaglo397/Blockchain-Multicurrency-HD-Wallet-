@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Container, Card, Alert } from "react-bootstrap";
 import CustomNavbar from "../components/Navbar";
 import { checkBalance } from "../blockchain";
-
+import "./Wallet.css";
 
 function Wallet() {
   const [username, setUsername] = useState("");
@@ -89,15 +89,15 @@ function Wallet() {
 
             {/* Crypto Prices */}
             <div className="d-flex justify-content-center mt-4">
-              <Card className="p-3 me-3 border-warning shadow-sm">
-                <h5 className="text-warning">ETH Price:</h5>
-                <p className="fw-bold">${ethPrice || "Fetching..."}</p>
-              </Card>
-              <Card className="p-3 border-primary shadow-sm">
-                <h5 className="text-primary">AVAX Price:</h5>
-                <p className="fw-bold">${avaxPrice || "Fetching..."}</p>
-              </Card>
-            </div>
+  <Card className="p-3 me-3 border-pink shadow-sm bg-light">
+    <h5 className="text-pink fw-bold">ETH Price:</h5>
+    <p className="fw-bold text-pink">${ethPrice || "Fetching..."}</p>
+  </Card>
+  <Card className="p-3 border-purple shadow-sm bg-light">
+    <h5 className="text-purple fw-bold">AVAX Price:</h5>
+    <p className="fw-bold text-purple">${avaxPrice || "Fetching..."}</p>
+  </Card>
+</div>
           </Card.Body>
         </Card>
       </Container>
