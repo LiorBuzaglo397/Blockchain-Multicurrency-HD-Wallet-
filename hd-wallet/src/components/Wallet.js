@@ -5,6 +5,7 @@ import CustomNavbar from "../components/Navbar";
 import { checkBalance, getTransactionHistory } from "../blockchain";
 
 function Wallet() {
+  const [username, setUsername] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
   const [ethBalance, setEthBalance] = useState("Fetching...");
   const [avaxBalance, setAvaxBalance] = useState("Fetching...");
@@ -21,11 +22,14 @@ function Wallet() {
   }, []);
 
   const fetchWalletDetails = async () => {
-    const walletData = JSON.parse(localStorage.getItem("userData"));
+    const walletData = JSON.parse(localStorage.getItem("currentUser"));
+
     if (!walletData || !walletData.address) {
       navigate("/create-wallet");
       return;
     }
+
+    setUsername(walletData.username || "Unknown User");
     setWalletAddress(walletData.address);
 
     try {
@@ -73,12 +77,10 @@ function Wallet() {
           <Card.Body>
             <h3 className="text-primary">My Wallet</h3>
             {error && <Alert variant="danger">{error}</Alert>}
-            <p className="text-muted">Logged in as: <strong>{walletAddress || "Connecting..."}</strong></p>
-
-            <Card className="mt-3 p-3 shadow-sm">
-              <h5 className="text-dark">My Address:</h5>
-              <p className="text-muted">{walletAddress}</p>
-            </Card>
+            <p className="text-muted">
+              Logged in as: <strong>{username}</strong>
+            </p>
+            <p className="text-muted">Wallet Address: <strong>{walletAddress || "Connecting..."}</strong></p>
 
             <Card className="mt-3 p-3 shadow-sm">
               <h5 className="text-dark">ETH Balance:</h5>

@@ -1,99 +1,55 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Card, Form, Button, Alert } from "react-bootstrap";
+import { useUser } from "../UserContext";
+import "./CreateWallet.css";
 
 function CreateWallet() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [wallet, setWallet] = useState(null);
-  const [error, setError] = useState("");
+  const { login } = useUser();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setError("");
 
-    try {
-      // ✅ Generate a new Ethereum wallet
-      const newWallet = ethers.Wallet.createRandom();
-      const walletData = {
-        username,
-        password,
-        address: newWallet.address,
-        seedPhrase: newWallet.mnemonic.phrase,
-        privateKey: newWallet.privateKey,
-        isLoggedIn: true,
-      };
+    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
 
-      // ✅ Store wallet data in localStorage
-      localStorage.setItem("userData", JSON.stringify(walletData));
-
-      // ✅ Update state with wallet info
-      setWallet(walletData);
-    } catch (error) {
-      setError("Wallet creation failed: " + error.message);
+    if (existingUsers.some((user) => user.username === username)) {
+      alert("Username already exists. Choose another one.");
+      return;
     }
-  };
 
-  // ✅ Navigate to the wallet page with user data
-  const goToWallet = () => {
-    if (wallet) {
-      navigate("/wallet");
-    }
-  };
+    const newWallet = ethers.Wallet.createRandom();
+    const walletData = {
+      username,
+      password,
+      address: newWallet.address,
+      seedPhrase: newWallet.mnemonic.phrase,
+      privateKey: newWallet.privateKey,
+      balance: "0.00",
+      isLoggedIn: true,
+    };
+
+    existingUsers.push(walletData);
+    localStorage.setItem("users", JSON.stringify(existingUsers));
+    localStorage.setItem("currentUser", JSON.stringify(walletData));
+
+    login(walletData);
+    navigate("/wallet");
+  }
 
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100">
-      <Card className="shadow-lg p-4" style={{ width: "400px" }}>
-        <h2 className="text-center text-primary">Create a New Wallet</h2>
-        {error && <Alert variant="danger">{error}</Alert>}
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit" className="w-100">
-            Create Wallet
-          </Button>
-        </Form>
-
-        {wallet && (
-          <>
-            <Alert variant="success" className="mt-3">
-              <h5>Wallet Address:</h5>
-              <p>{wallet.address}</p>
-            </Alert>
-            <Alert variant="info" className="mt-3">
-              <h5>Seed Phrase (Write it Down!):</h5>
-              <p>{wallet.seedPhrase}</p>
-            </Alert>
-            <Alert variant="warning" className="mt-3">
-              <h5>Private Key (Keep it Safe!):</h5>
-              <p>{wallet.privateKey}</p>
-            </Alert>
-            <Button variant="success" onClick={goToWallet} className="w-100 mt-3">
-              Go to Wallet
-            </Button>
-          </>
-        )}
-      </Card>
-    </Container>
+    <main className="wallet-container">
+      <h1>Create a New Wallet</h1>
+      <form onSubmit={handleSubmit}>
+        <label>Username</label>
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+        <label>Password</label>
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <button type="submit">Create Wallet</button>
+      </form>
+    </main>
   );
 }
 

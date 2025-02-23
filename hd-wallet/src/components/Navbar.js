@@ -28,8 +28,6 @@ function NavigationBar() {
               <Dropdown.Menu>
                 <Dropdown.Item href="/send-coins">Send Coins</Dropdown.Item>
                 <Dropdown.Item href="/transaction-history">Transaction History</Dropdown.Item>
-                <Dropdown.Item href="/create-wallet">Create Wallet</Dropdown.Item>
-                <Dropdown.Item href="/restore-account">Restore Account</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             <Button variant="danger" className="ms-3" onClick={logOut}>

@@ -1,169 +1,162 @@
-/*
-    This file is part of web3.js.
+import Web3 from "web3";
 
-    web3.js is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+// 🔧 Infura API Key
+const INFURA_API_KEY = "8556c67194bc4af989e4a0876f20a8ab";
 
-    web3.js is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
+// ✅ RPC URLs
+const SEPOLIA_RPC_URL = `https://sepolia.infura.io/v3/${INFURA_API_KEY}`;
+const AVAX_RPC_URL = `https://avalanche-fuji.infura.io/v3/${INFURA_API_KEY}`;
+const MTW_RPC_URL = "https://net.mtw-testnet.com";
 
-    You should have received a copy of the GNU Lesser General Public License
-    along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// ✅ Blockchain Explorers (for transactions)
+const ETHERSCAN_API_KEY = "ZU65QFWEEJYCFB4ZSR4I4I6FPXT4YWHCA3";
+const AVAXSCAN_API_KEY = "YOUR_AVAXSCAN_API_KEY";
+const MTW_EXPLORER_URL = "https://blockexplorer.morethanwallet.com/api";
+
+// ✅ Web3 Instances
+const web3Eth = new Web3(new Web3.providers.HttpProvider(SEPOLIA_RPC_URL));
+const web3Avax = new Web3(new Web3.providers.HttpProvider(AVAX_RPC_URL));
+const web3Mtw = new Web3(new Web3.providers.HttpProvider(MTW_RPC_URL));
+
 /**
- * @file web3.js
- * @authors:
- *   Jeffrey Wilcke <jeff@ethdev.com>
- *   Marek Kotewicz <marek@ethdev.com>
- *   Marian Oancea <marian@ethdev.com>
- *   Fabian Vogelsteller <fabian@ethdev.com>
- *   Gav Wood <g@ethdev.com>
- * @date 2014
+ * ✅ Helper function to get the correct Web3 instance
+ * @param {string} coin - "ETH" | "AVAX" | "MTW"
+ * @returns {Web3} - Web3 instance for the specified blockchain
  */
-
-var RequestManager = require('./web3/requestmanager');
-var Iban = require('./web3/iban');
-var Eth = require('./web3/methods/eth');
-var DB = require('./web3/methods/db');
-var Shh = require('./web3/methods/shh');
-var Net = require('./web3/methods/net');
-var Personal = require('./web3/methods/personal');
-var Settings = require('./web3/settings');
-var version = require('./version.json');
-var utils = require('./utils/utils');
-var sha3 = require('./utils/sha3');
-var extend = require('./web3/extend');
-var Batch = require('./web3/batch');
-var Property = require('./web3/property');
-var HttpProvider = require('./web3/httpprovider');
-var IpcProvider = require('./web3/ipcprovider');
-
-// AVAX
-var web3Avax = new Web3(
-    "https://avalanche-fuji.infura.io/v3/8556c67194bc4af989e4a0876f20a8ab"
-  );
-  
-/**
- * ✅ Fetch AVAX Balance from Avalanche Fuji Testnet
- * @param {string} address - Wallet Address
- * @returns {Promise<string>} AVAX balance
- */
-export async function getAvaxBalance(address) {
-    try {
-      if (!Web3.utils.isAddress(address)) throw new Error("Invalid AVAX address");
-  
-      // 🔹 Get balance in Wei
-      const balanceWei = await web3Avax.eth.getBalance(address);
-  
-      // 🔹 Convert balance to AVAX (1 AVAX = 10^18 Wei)
-      const balanceAvax = web3Avax.utils.fromWei(balanceWei, "ether");
-  
-      return `${balanceAvax} AVAX`;
-    } catch (error) {
-      console.error("Error fetching AVAX balance:", error);
-      return "Error fetching AVAX balance";
-    }
+function getWeb3Instance(coin) {
+  switch (coin) {
+    case "ETH":
+      return web3Eth;
+    case "AVAX":
+      return web3Avax;
+    case "MTW":
+      return web3Mtw;
+    default:
+      throw new Error("❌ Invalid coin type");
   }
-function Web3 (provider) {
-    this._requestManager = new RequestManager(provider);
-    this.currentProvider = provider;
-    this.eth = new Eth(this);
-    this.db = new DB(this);
-    this.shh = new Shh(this);
-    this.net = new Net(this);
-    this.personal = new Personal(this);
-    this.settings = new Settings();
-    this.version = {
-        api: version.version
-    };
-    this.providers = {
-        HttpProvider: HttpProvider,
-        IpcProvider: IpcProvider
-    };
-    this._extend = extend(this);
-    this._extend({
-        properties: properties()
-    });
 }
 
-// expose providers on the class
-Web3.providers = {
-    HttpProvider: HttpProvider,
-    IpcProvider: IpcProvider
-};
+/**
+ * ✅ Fetch account balance for ETH, AVAX, or MTW
+ * @param {string} coin - "ETH" | "AVAX" | "MTW"
+ * @param {string} address - Wallet address
+ * @returns {Promise<string>} - Balance in respective token
+ */
+export async function checkBalance(coin, address) {
+  if (!address) throw new Error("❌ Address is required!");
 
-Web3.prototype.setProvider = function (provider) {
-    this._requestManager.setProvider(provider);
-    this.currentProvider = provider;
-};
+  try {
+    const web3 = getWeb3Instance(coin);
+    const balanceWei = await web3.eth.getBalance(address);
+    const balance = Web3.utils.fromWei(balanceWei, "ether");
 
-Web3.prototype.reset = function (keepIsSyncing) {
-    this._requestManager.reset(keepIsSyncing);
-    this.settings = new Settings();
-};
-
-Web3.prototype.toHex = utils.toHex;
-Web3.prototype.toAscii = utils.toAscii;
-Web3.prototype.toUtf8 = utils.toUtf8;
-Web3.prototype.fromAscii = utils.fromAscii;
-Web3.prototype.fromUtf8 = utils.fromUtf8;
-Web3.prototype.toDecimal = utils.toDecimal;
-Web3.prototype.fromDecimal = utils.fromDecimal;
-Web3.prototype.toBigNumber = utils.toBigNumber;
-Web3.prototype.toWei = utils.toWei;
-Web3.prototype.fromWei = utils.fromWei;
-Web3.prototype.isAddress = utils.isAddress;
-Web3.prototype.isChecksumAddress = utils.isChecksumAddress;
-Web3.prototype.toChecksumAddress = utils.toChecksumAddress;
-Web3.prototype.isIBAN = utils.isIBAN;
-
-
-Web3.prototype.sha3 = function(string, options) {
-    return '0x' + sha3(string, options);
-};
+    console.log(`✅ ${coin} balance: ${balance}`);
+    return balance;
+  } catch (error) {
+    console.error(`❌ Error fetching balance for ${coin}:`, error.message);
+    return "Error fetching balance";
+  }
+}
 
 /**
- * Transforms direct icap to address
+ * ✅ Fetch transaction history for ETH, AVAX, or MTW
+ * @param {string} coin - "ETH" | "AVAX" | "MTW"
+ * @param {string} address - Wallet address
+ * @returns {Promise<Object[]>} - Array of transactions
  */
-Web3.prototype.fromICAP = function (icap) {
-    var iban = new Iban(icap);
-    return iban.address();
-};
+export async function getTransactionHistory(coin, address) {
+  if (!address) throw new Error("🚨 Missing wallet address");
 
-var properties = function () {
-    return [
-        new Property({
-            name: 'version.node',
-            getter: 'web3_clientVersion'
-        }),
-        new Property({
-            name: 'version.network',
-            getter: 'net_version',
-            inputFormatter: utils.toDecimal
-        }),
-        new Property({
-            name: 'version.ethereum',
-            getter: 'eth_protocolVersion',
-            inputFormatter: utils.toDecimal
-        }),
-        new Property({
-            name: 'version.whisper',
-            getter: 'shh_version',
-            inputFormatter: utils.toDecimal
-        })
-    ];
-};
+  let explorerUrl;
+  if (coin === "ETH") {
+    explorerUrl = `https://api-sepolia.etherscan.io/api?module=account&action=txlist&address=${address}&apikey=${ETHERSCAN_API_KEY}`;
+  } else if (coin === "AVAX") {
+    explorerUrl = `https://api.snowtrace.io/api?module=account&action=txlist&address=${address}&apikey=${AVAXSCAN_API_KEY}`;
+  } else if (coin === "MTW") {
+    explorerUrl = `${MTW_EXPLORER_URL}?module=account&action=txlist&address=${address}`;
+  } else {
+    throw new Error("❌ Invalid coin type");
+  }
 
-Web3.prototype.isConnected = function(){
-    return (this.currentProvider && this.currentProvider.isConnected());
-};
+  try {
+    const response = await fetch(explorerUrl);
+    const data = await response.json();
+    if (!data.result) throw new Error("❌ Failed to fetch transactions");
 
-Web3.prototype.createBatch = function () {
-    return new Batch(this);
-};
+    console.log(`✅ ${coin} Transactions:`, data.result);
+    return data.result;
+  } catch (error) {
+    console.error(`❌ Error fetching transactions for ${coin}:`, error);
+    return [];
+  }
+}
 
-module.exports = Web3;
+/**
+ * ✅ Send a Transaction (ETH, AVAX, MTW)
+ * @param {string} coin - "ETH" | "AVAX" | "MTW"
+ * @param {string} privateKey - Sender's private key
+ * @param {string} recipient - Receiver's wallet address
+ * @param {number} amount - Amount to send
+ * @returns {Promise<string>} - Transaction ID (TXID)
+ */
+export async function sendTransaction(coin, privateKey, recipient, amount) {
+  if (!privateKey || !recipient || !amount) {
+    throw new Error("🚨 Missing transaction parameters");
+  }
+
+  try {
+    const web3 = getWeb3Instance(coin);
+
+    // Validate recipient address
+    if (!web3.utils.isAddress(recipient)) {
+      throw new Error("🚨 Invalid recipient address");
+    }
+
+    // Convert private key to account
+    const senderAccount = web3.eth.accounts.privateKeyToAccount(privateKey);
+    const sender = senderAccount.address;
+
+    console.log(`🚀 Sending ${amount} ${coin} from ${sender} to ${recipient}...`);
+
+    const nonce = await web3.eth.getTransactionCount(sender, "latest");
+    const gasPrice = await web3.eth.getGasPrice();
+    const gasLimit = 21000; // Standard for simple transfers
+
+    const tx = {
+      from: sender,
+      to: recipient,
+      value: web3.utils.toWei(amount.toString(), "ether"),
+      gas: gasLimit,
+      gasPrice,
+      nonce,
+    };
+
+    // Sign and send transaction
+    const signedTx = await senderAccount.signTransaction(tx);
+    const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+
+    console.log(`✅ Transaction successful: ${receipt.transactionHash}`);
+    return receipt.transactionHash;
+  } catch (error) {
+    console.error("❌ Error sending transaction:", error);
+    throw new Error(error.message || "Transaction failed.");
+  }
+}
+
+/**
+ * ✅ Fetch MTW Balance
+ * @param {string} address - Wallet address
+ * @returns {Promise<string>} - Balance in wETH (MTW)
+ */
+export async function checkMtwBalance(address) {
+  return checkBalance("MTW", address);
+}
+
+/**
+ * ✅ Fetch MTW Transaction History
+ * @param {string} address - Wallet address
+ * @returns {Promise<Object[]>} - Transaction history array
+ */
+export async function getMtwTransactionHistory(address) {
+  return getTransactionHistory("MTW", address);
+}

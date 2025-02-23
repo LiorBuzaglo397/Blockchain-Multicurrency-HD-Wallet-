@@ -1,37 +1,46 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { sendCoins } from "../mainsfuncs"; // ✅ Use sendCoins from mainsfuncs.js
+import { sendCoins } from "../mainsfuncs"; 
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Card, Form, Button } from "react-bootstrap";
-import CustomNavbar from "../components/Navbar"; // ✅ Import the Navbar component
+import { Container, Card, Form, Button, Alert } from "react-bootstrap";
+import CustomNavbar from "../components/Navbar";
 
 function SendCoins() {
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
-  const [coin, setCoin] = useState("ETH");
+  const [coin, setCoin] = useState("ETH"); // ✅ Default to "ETH"
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  function handleSend(event) {
+  async function handleSend(event) {
     event.preventDefault();
-    sendCoins(recipient, amount, coin, setMessage);
+    setLoading(true);
+    setMessage("🚀 Sending transaction...");
+
+    try {
+      if (!recipient || !amount || !coin) {
+        throw new Error("❌ Please fill in all fields.");
+      }
+      await sendCoins(recipient, amount, coin, setMessage);
+    } catch (error) {
+      setMessage("❌ Transaction failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div>
-      {/* ✅ Custom Navbar */}
       <CustomNavbar />
-
-      {/* Page Content with Top Padding to Prevent Navbar Overlap */}
       <Container className="mt-5 pt-5 d-flex justify-content-center">
         <Card className="shadow-lg p-4 w-100" style={{ maxWidth: "400px" }}>
           <Card.Body>
             <h3 className="text-primary text-center mb-4">Send Coins</h3>
 
-            {/* ✅ Transaction Form */}
+            {message && <Alert variant="info" className="text-center">{message}</Alert>}
+
             <Form onSubmit={handleSend}>
               <Form.Group className="mb-3">
-                <Form.Label>Recipient's Wallet ID</Form.Label>
+                <Form.Label>Recipient's Wallet Address</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter recipient address"
@@ -54,28 +63,18 @@ function SendCoins() {
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Coin</Form.Label>
-                <Form.Select
-                  value={coin}
-                  onChange={(e) => setCoin(e.target.value)}
-                  required
-                >
+                <Form.Label>Select Coin</Form.Label>
+                <Form.Select value={coin} onChange={(e) => setCoin(e.target.value)}>
                   <option value="ETH">Ethereum (ETH)</option>
                   <option value="AVAX">Avalanche (AVAX)</option>
+                  <option value="MTW">MTW (wETH)</option>
                 </Form.Select>
               </Form.Group>
 
-              <Button type="submit" variant="primary" className="w-100 mt-3">
-                Send Coins
+              <Button type="submit" variant="primary" className="w-100 mt-3" disabled={loading}>
+                {loading ? "Processing..." : "Send Coins"}
               </Button>
             </Form>
-
-            {/* ✅ Transaction Message */}
-            {message && (
-              <div className="mt-3 text-center">
-                <p className="fw-bold text-success">{message}</p>
-              </div>
-            )}
           </Card.Body>
         </Card>
       </Container>

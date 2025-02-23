@@ -1,69 +1,86 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../UserContext";
 import { getTransactionHistory } from "../blockchain";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Table, Card } from "react-bootstrap";
-import CustomNavbar from "../components/Navbar"; // ✅ Import the reusable Navbar
+import { Container, Table, Card, Alert } from "react-bootstrap";
+import CustomNavbar from "../components/Navbar";
 
 function TransactionHistory() {
-  const [transactions, setTransactions] = useState([]);
+  const { user } = useUser();
   const navigate = useNavigate();
+  const [transactions, setTransactions] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    checkLoginStatus();
-    fetchTransactions();
-  }, []);
-
-  function checkLoginStatus() {
-    const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
       navigate("/login");
+      return;
     }
-  }
+    fetchTransactions();
+  }, [user]);
 
   async function fetchTransactions() {
     try {
-      const txs = await getTransactionHistory("ETH");
+      console.log("🚀 Fetching transactions...");
+      const txs = await getTransactionHistory("ETH", user?.address);
+
+      if (!txs || !Array.isArray(txs)) {
+        throw new Error("No transaction history found.");
+      }
+
       setTransactions(txs);
     } catch (error) {
       console.error("Error fetching transactions:", error);
+      setError("Failed to fetch transactions.");
     }
   }
 
   return (
     <div>
-      {/* ✅ Using the Custom Navbar */}
+      {/* ✅ ניווט עליון */}
       <CustomNavbar />
 
-      {/* Page Content with Padding to Prevent Navbar Overlap */}
-      <Container className="mt-5 pt-5 d-flex justify-content-center">
-        <Card className="shadow-lg p-4 w-100" style={{ maxWidth: "900px" }}>
+      <Container className="mt-5 pt-5">
+        <Card className="shadow-lg p-4">
           <Card.Body>
             <h3 className="text-primary text-center mb-4">Transaction History</h3>
 
-            {/* Transaction History Table */}
+            {/* ✅ הודעת שגיאה במקרה הצורך */}
+            {error && <Alert variant="danger">{error}</Alert>}
+
+            {/* ✅ טבלה של עסקאות */}
             <div className="table-responsive">
               <Table striped bordered hover className="mt-3 text-center">
                 <thead className="bg-light">
                   <tr>
-                    <th>Transaction ID</th>
+                    <th>#</th>
+                    <th>Transaction Hash</th>
+                    <th>From</th>
+                    <th>To</th>
                     <th>Amount (ETH)</th>
-                    <th>Recipient</th>
+                    <th>Currency</th>
                   </tr>
                 </thead>
                 <tbody>
                   {transactions.length > 0 ? (
-                    transactions.map((tx) => (
-                      <tr key={tx.txid}>
-                        <td className="text-truncate" style={{ maxWidth: "200px" }}>{tx.txid}</td>
-                        <td className="text-success">{tx.amount}</td>
-                        <td>{tx.recipient}</td>
+                    transactions.map((tx, index) => (
+                      <tr key={tx.hash || index}>
+                        <td>{index + 1}</td>
+                        <td className="text-truncate" style={{ maxWidth: "150px" }}>
+                          {tx.hash ? tx.hash.slice(0, 15) + "..." : "N/A"}
+                        </td>
+                        <td className="text-muted">{tx.from || "N/A"}</td>
+                        <td className="text-muted">{tx.to || "N/A"}</td>
+                        <td className="text-success">
+                          {tx.value ? (parseFloat(tx.value) / 10 ** 18).toFixed(6) : "N/A"}
+                        </td>
+                        <td>ETH</td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="3" className="text-center text-muted">
-                        No transactions found
+                      <td colSpan="6" className="text-center text-muted">
+                        No transactions found.
                       </td>
                     </tr>
                   )}

@@ -1,4 +1,6 @@
 import Web3 from "web3";
+import { sendTransaction } from "./blockchain"; 
+
 
 // Web3 Initialization with Infura
 export const web3 = new Web3(
@@ -63,40 +65,44 @@ export function restoreAccount(seedPhraseInput, newPassword) {
     }
   }
 
-  export function sendCoins(recipient, amount, coin, setMessage) {
-    var allUsers = JSON.parse(localStorage.getItem("userData")) || [];
-    var loggedInUser = allUsers.find((user) => user.isLoggedIn);
-  
-    if (!loggedInUser) {
-      setMessage("No logged in user found.");
-      return;
-    }
-  
-    var transaction = {
-      from: loggedInUser.address,
-      to: recipient,
-      value: amount,
-      type: coin,
-    };
-  
-    if (!loggedInUser.transactions) {
-      loggedInUser.transactions = [];
-    }
-  
-    loggedInUser.transactions.push(transaction);
-  
-    var recipientUser = allUsers.find((user) => user.address === recipient);
-    if (recipientUser) {
-      if (!recipientUser.transactions) {
-        recipientUser.transactions = [];
+
+
+  /**
+   * ✅ Send Coins
+   * @param {string} recipient - Receiver's wallet address
+   * @param {number} amount - Amount to send
+   * @param {string} coin - "ETH" | "AVAX" | "MTW"
+   * @param {function} setMessage - Function to update UI message
+   */
+  export async function sendCoins(recipient, amount, coin, setMessage) {
+    try {
+      // 🔹 Retrieve current user from localStorage
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (!currentUser || !currentUser.privateKey) {
+        throw new Error("🚨 No user logged in or missing private key!");
       }
-      recipientUser.transactions.push(transaction);
+  
+      const privateKey = currentUser.privateKey;
+  
+      // 🔹 Validate inputs
+      if (!recipient || !amount || !coin) {
+        throw new Error("🚨 Missing transaction parameters");
+      }
+  
+      console.log(`🚀 Initiating transfer: ${amount} ${coin} to ${recipient}`);
+  
+      // 🔹 Execute transaction
+      const txHash = await sendTransaction(coin, privateKey, recipient, amount);
+  
+      setMessage(`✅ Transaction Successful! TX: ${txHash}`);
+      console.log(`✅ Transaction Hash: ${txHash}`);
+    } catch (error) {
+      console.error("❌ Error sending coins:", error.message);
+      setMessage(`❌ Error: ${error.message}`);
     }
-  
-    localStorage.setItem("userData", JSON.stringify(allUsers));
-  
-    setMessage(`Transaction successful! Sent ${amount} ${coin} to ${recipient}`);
   }
+  
+
   
   export function fetchTransactions() {
     var allUsers = JSON.parse(localStorage.getItem("userData")) || [];
