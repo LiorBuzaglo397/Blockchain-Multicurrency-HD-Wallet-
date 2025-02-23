@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Blockchain-Multicurrency-HD-Wallet-/static/css/main.03e70677.css",
-    "main.js": "/Blockchain-Multicurrency-HD-Wallet-/static/js/main.91837304.js",
+    "main.js": "/Blockchain-Multicurrency-HD-Wallet-/static/js/main.c0df3af3.js",
     "static/js/453.14f1c7a1.chunk.js": "/Blockchain-Multicurrency-HD-Wallet-/static/js/453.14f1c7a1.chunk.js",
     "index.html": "/Blockchain-Multicurrency-HD-Wallet-/index.html",
     "main.03e70677.css.map": "/Blockchain-Multicurrency-HD-Wallet-/static/css/main.03e70677.css.map",
-    "main.91837304.js.map": "/Blockchain-Multicurrency-HD-Wallet-/static/js/main.91837304.js.map",
+    "main.c0df3af3.js.map": "/Blockchain-Multicurrency-HD-Wallet-/static/js/main.c0df3af3.js.map",
     "453.14f1c7a1.chunk.js.map": "/Blockchain-Multicurrency-HD-Wallet-/static/js/453.14f1c7a1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.03e70677.css",
-    "static/js/main.91837304.js"
+    "static/js/main.c0df3af3.js"
   ]
 }
