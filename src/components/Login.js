@@ -67,8 +67,8 @@ function Login() {
             </Form>
 
             <div className="text-center mt-3">
-              <p>Don't have a wallet? <a href="/create-wallet" className="text-primary">Create Wallet</a></p>
-              <p>Forgot your wallet? <a href="/restore-account" className="text-danger">Restore Wallet</a></p>
+              <p>Don't have a wallet? <a href="#/create-wallet" className="text-primary">Create Wallet</a></p>
+              <p>Forgot your wallet? <a href="#/restore-account" className="text-danger">Restore Wallet</a></p>
             </div>
           </Card.Body>
         </Card>
