@@ -74,20 +74,14 @@ function Wallet() {
               Logged in as: <strong>{username}</strong>
             </p>
             <p className="text-muted">Wallet Address: <strong>{walletAddress || "Connecting..."}</strong></p>
-
-            {/* ETH Balance */}
             <Card className="mt-3 p-3 shadow-sm">
               <h5 className="text-dark">ETH Balance:</h5>
               <p className="text-success">{ethBalance} ETH</p>
             </Card>
-
-            {/* AVAX Balance */}
             <Card className="mt-3 p-3 shadow-sm">
               <h5 className="text-dark">AVAX Balance:</h5>
               <p className="text-info">{avaxBalance} AVAX</p>
             </Card>
-
-            {/* Crypto Prices */}
             <div className="d-flex justify-content-center mt-4">
   <Card className="p-3 me-3 border-pink shadow-sm bg-light">
     <h5 className="text-pink fw-bold">ETH Price:</h5>

@@ -1,14 +1,11 @@
 import Web3 from "web3";
 
-// 🔧 Infura API Key
 const INFURA_API_KEY = "8556c67194bc4af989e4a0876f20a8ab";
 
-// ✅ RPC URLs
 const SEPOLIA_RPC_URL = `https://sepolia.infura.io/v3/${INFURA_API_KEY}`;
 const AVAX_RPC_URL = `https://avalanche-fuji.infura.io/v3/${INFURA_API_KEY}`;
 const MTW_RPC_URL = "https://net.mtw-testnet.com";
 
-// ✅ Blockchain Explorers (for transactions)
 const ETHERSCAN_API_KEY = "ZU65QFWEEJYCFB4ZSR4I4I6FPXT4YWHCA3";
 const AVAXSCAN_API_KEY = "YOUR_AVAXSCAN_API_KEY";
 const MTW_EXPLORER_URL = "https://blockexplorer.morethanwallet.com/api";
@@ -19,7 +16,6 @@ const web3Avax = new Web3(new Web3.providers.HttpProvider(AVAX_RPC_URL));
 const web3Mtw = new Web3(new Web3.providers.HttpProvider(MTW_RPC_URL));
 
 /**
- * ✅ Helper function to get the correct Web3 instance
  * @param {string} coin - "ETH" | "AVAX" | "MTW"
  * @returns {Web3} - Web3 instance for the specified blockchain
  */
@@ -37,8 +33,7 @@ function getWeb3Instance(coin) {
 }
 
 /**
- * ✅ Fetch account balance for ETH, AVAX, or MTW
- * @param {string} coin - "ETH" | "AVAX" | "MTW"
+ * @param {string} coin - "ETH" | "AVAX" 
  * @param {string} address - Wallet address
  * @returns {Promise<string>} - Balance in respective token
  */
@@ -59,8 +54,7 @@ export async function checkBalance(coin, address) {
 }
 
 /**
- * ✅ Fetch transaction history for ETH, AVAX, or MTW
- * @param {string} coin - "ETH" | "AVAX" | "MTW"
+ * @param {string} coin - "ETH" | "AVAX" 
  * @param {string} address - Wallet address
  * @returns {Promise<Object[]>} - Array of transactions
  */
@@ -92,8 +86,7 @@ export async function getTransactionHistory(coin, address) {
 }
 
 /**
- * ✅ Send a Transaction (ETH, AVAX, MTW)
- * @param {string} coin - "ETH" | "AVAX" | "MTW"
+ * @param {string} coin - "ETH" | "AVAX" 
  * @param {string} privateKey - Sender's private key
  * @param {string} recipient - Receiver's wallet address
  * @param {number} amount - Amount to send
@@ -107,12 +100,10 @@ export async function sendTransaction(coin, privateKey, recipient, amount) {
   try {
     const web3 = getWeb3Instance(coin);
 
-    // Validate recipient address
     if (!web3.utils.isAddress(recipient)) {
       throw new Error("🚨 Invalid recipient address");
     }
 
-    // Convert private key to account
     const senderAccount = web3.eth.accounts.privateKeyToAccount(privateKey);
     const sender = senderAccount.address;
 
@@ -120,7 +111,7 @@ export async function sendTransaction(coin, privateKey, recipient, amount) {
 
     const nonce = await web3.eth.getTransactionCount(sender, "latest");
     const gasPrice = await web3.eth.getGasPrice();
-    const gasLimit = 21000; // Standard for simple transfers
+    const gasLimit = 21000; 
 
     const tx = {
       from: sender,
@@ -131,7 +122,6 @@ export async function sendTransaction(coin, privateKey, recipient, amount) {
       nonce,
     };
 
-    // Sign and send transaction
     const signedTx = await senderAccount.signTransaction(tx);
     const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 
@@ -144,16 +134,14 @@ export async function sendTransaction(coin, privateKey, recipient, amount) {
 }
 
 /**
- * ✅ Fetch MTW Balance
  * @param {string} address - Wallet address
- * @returns {Promise<string>} - Balance in wETH (MTW)
+ * @returns {Promise<string>} - Balance in wETH 
  */
 export async function checkMtwBalance(address) {
   return checkBalance("MTW", address);
 }
 
 /**
- * ✅ Fetch MTW Transaction History
  * @param {string} address - Wallet address
  * @returns {Promise<Object[]>} - Transaction history array
  */

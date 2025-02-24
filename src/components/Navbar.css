@@ -1,10 +1,8 @@
-/* 🎨 עיצוב ניווט */
 .custom-navbar {
-  background-color: #007bff; /* כחול יפה */
+  background-color: #007bff; 
   padding: 12px 20px;
 }
 
-/* צבע קישורים */
 .nav-link-custom {
   color: white !important;
   font-weight: 500;
@@ -16,7 +14,6 @@
   color: #ffdd57 !important;
 }
 
-/* שם משתמש */
 .nav-username {
   color: white;
   font-weight: bold;
@@ -24,7 +21,6 @@
   font-size: 1rem;
 }
 
-/* כפתור יציאה */
 .logout-btn {
   border-radius: 25px;
   padding: 6px 15px;

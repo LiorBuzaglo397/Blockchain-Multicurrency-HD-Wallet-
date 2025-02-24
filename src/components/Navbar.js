@@ -2,11 +2,11 @@ import React from "react";
 import { Container, Navbar, Nav, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css"; 
-import { useUser } from "../UserContext"; // שימוש בהקשר המשתמש
+import { useUser } from "../UserContext"; 
 
 function NavigationBar() {
   const navigate = useNavigate();
-  const { logout, user } = useUser(); // משתמש מחובר
+  const { logout, user } = useUser(); 
 
   const logOut = () => {
     logout();

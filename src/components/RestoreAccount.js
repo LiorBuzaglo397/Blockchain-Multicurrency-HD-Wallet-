@@ -9,7 +9,7 @@ function RestoreAccount() {
   const [seedPhrase, setSeedPhrase] = useState(Array(12).fill(""));
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [showSeed, setShowSeed] = useState(false); // ✅ Toggle visibility
+  const [showSeed, setShowSeed] = useState(false); 
   const navigate = useNavigate();
 
   const handleChange = (index, value) => {
@@ -50,7 +50,7 @@ function RestoreAccount() {
                     <Col key={index} xs={4} className="mb-2">
                       <InputGroup>
                         <Form.Control
-                          type={showSeed ? "text" : "password"} // ✅ Toggle visibility
+                          type={showSeed ? "text" : "password"} 
                           placeholder={`Word ${index + 1}`}
                           value={word}
                           onChange={(e) => handleChange(index, e.target.value)}

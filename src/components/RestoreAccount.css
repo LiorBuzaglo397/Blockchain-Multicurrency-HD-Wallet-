@@ -1,16 +1,13 @@
-/* ✅ Background Styling */
 .restore-account-page {
 
   background-size: cover;
 }
 
-/* ✅ Styling for the Restore Card */
 .card {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 10px;
 }
 
-/* ✅ Seed Phrase Input Fields */
 input[type="password"], input[type="text"] {
   text-align: center;
   font-size: 16px;

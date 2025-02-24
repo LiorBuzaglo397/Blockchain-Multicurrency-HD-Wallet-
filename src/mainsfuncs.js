@@ -2,7 +2,6 @@ import Web3 from "web3";
 import { sendTransaction } from "./blockchain"; 
 
 
-// Web3 Initialization with Infura
 export const web3 = new Web3(
   new Web3.providers.HttpProvider(
     "https://sepolia.infura.io/v3/f4a064381a4145aea1b2bfd4bd620456"
@@ -13,7 +12,6 @@ export const web3AVAX = new Web3(
   "https://avalanche-fuji.infura.io/v3/f4a064381a4145aea1b2bfd4bd620456"
 );
 
-// פונקציה לטיפול בהתחברות המשתמש
 export function login(username, password) {
   const allUsers = JSON.parse(localStorage.getItem("userData")) || [];
   const loggedInUser = allUsers.find((user) => user.isLoggedIn);
@@ -34,7 +32,6 @@ export function login(username, password) {
   return "Login Successful. Redirecting...";
 }
 
-// פונקציה לטיפול בהתנתקות המשתמש
 export function logOut() {
   const allUsers = JSON.parse(localStorage.getItem("userData")) || [];
   const loggedInUser = allUsers.find((user) => user.isLoggedIn);
@@ -48,12 +45,10 @@ export function logOut() {
 export function restoreAccount(seedPhrase, newPassword) {
   let allUsers = JSON.parse(localStorage.getItem("users")) || [];
 
-  // 🔹 בדיקה אם allUsers הוא מערך, אם לא - יוצרים מערך ריק
   if (!Array.isArray(allUsers)) {
       allUsers = [];
   }
 
-  // 🔍 חיפוש משתמש לפי ה-Seed Phrase
   const userWallet = allUsers.find((user) => user.seedPhrase === seedPhrase);
 
   if (!userWallet) {
@@ -70,7 +65,6 @@ export function restoreAccount(seedPhrase, newPassword) {
 }
 
   /**
-   * ✅ Send Coins
    * @param {string} recipient - Receiver's wallet address
    * @param {number} amount - Amount to send
    * @param {string} coin - "ETH" | "AVAX" | "MTW"
@@ -78,7 +72,6 @@ export function restoreAccount(seedPhrase, newPassword) {
    */
   export async function sendCoins(recipient, amount, coin, setMessage) {
     try {
-      // 🔹 Retrieve current user from localStorage
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
       if (!currentUser || !currentUser.privateKey) {
         throw new Error("🚨 No user logged in or missing private key!");
@@ -86,14 +79,12 @@ export function restoreAccount(seedPhrase, newPassword) {
   
       const privateKey = currentUser.privateKey;
   
-      // 🔹 Validate inputs
       if (!recipient || !amount || !coin) {
         throw new Error("🚨 Missing transaction parameters");
       }
   
       console.log(`🚀 Initiating transfer: ${amount} ${coin} to ${recipient}`);
   
-      // 🔹 Execute transaction
       const txHash = await sendTransaction(coin, privateKey, recipient, amount);
   
       setMessage(`✅ Transaction Successful! TX: ${txHash}`);
@@ -117,7 +108,6 @@ export function restoreAccount(seedPhrase, newPassword) {
     return loggedInUser.transactions || [];
   }
   
-// פונקציה ליצירת ארנק חדש
 export function createAccount(username, password) {
   const seedPhrase = window.lightwallet.keystore.generateRandomSeed();
 
@@ -158,7 +148,6 @@ export function createAccount(username, password) {
   });
 }
 
-// פונקציה לקבלת יתרת ה-ETH
 export async function getETHBalance() {
   const allUsers = JSON.parse(localStorage.getItem("userData")) || [];
   const loggedInUser = allUsers.find((user) => user.isLoggedIn);
@@ -172,7 +161,6 @@ export async function getETHBalance() {
   return web3.utils.fromWei(balanceWei, "ether");
 }
 
-// פונקציה לקבלת יתרת ה-AVAX
 export async function getAVAXBalance() {
   const allUsers = JSON.parse(localStorage.getItem("userData")) || [];
   const loggedInUser = allUsers.find((user) => user.isLoggedIn);
@@ -186,13 +174,11 @@ export async function getAVAXBalance() {
   return web3AVAX.utils.fromWei(balanceWei, "ether");
 }
 
-// פונקציה לבדיקה אם המשתמש מחובר
 export function checkLoginStatus() {
   const allUsers = JSON.parse(localStorage.getItem("userData")) || [];
   return allUsers.find((user) => user.isLoggedIn) || null;
 }
 
-// פונקציה לקבלת מחיר ETH
 export function getEthPrice() {
   return fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd")
     .then((response) => response.json())
@@ -203,7 +189,6 @@ export function getEthPrice() {
     });
 }
 
-// פונקציה לקבלת מחיר AVAX
 export function getAvaxPrice() {
   return fetch("https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd")
     .then((response) => response.json())

@@ -8,7 +8,7 @@ import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 function CreateWallet() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [walletData, setWalletData] = useState(null); // ✅ שמירת נתוני הארנק
+  const [walletData, setWalletData] = useState(null); 
   const { login } = useUser();
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ function CreateWallet() {
     localStorage.setItem("users", JSON.stringify(existingUsers));
     localStorage.setItem("currentUser", JSON.stringify(newWalletData));
 
-    setWalletData(newWalletData); // ✅ הצגת פרטי הארנק
+    setWalletData(newWalletData); 
     login(newWalletData);
   }
 

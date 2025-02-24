@@ -90,8 +90,6 @@ function SendCoins() {
                 )}
 
                 <Form onSubmit={handleSend}>
-
-                  {/* ✅ שדה "From" עם הכתובת של המשתמש */}
                   <Form.Group className="mb-3">
                     <Form.Label>Your Wallet Address (From)</Form.Label>
                     <Form.Control 
@@ -101,8 +99,6 @@ function SendCoins() {
                       className="fs-5 py-2 bg-secondary text-white"
                     />
                   </Form.Group>
-
-                  {/* ✅ שדה "To" עם כתובת הנמען */}
                   <Form.Group className="mb-3">
                     <Form.Label>Recipient's Wallet Address (To)</Form.Label>
                     <Form.Control

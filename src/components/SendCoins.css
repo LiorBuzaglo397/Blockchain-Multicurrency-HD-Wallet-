@@ -1,20 +1,18 @@
-/* ✅ מוודא שהקונטיינר יכסה את כל הדף */
 .send-coins-container {
   position: absolute;
-  top: 80px; /* בדיוק מתחת ל-Navbar */
+  top: 80px; 
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 850px; /* ✅ טיפה יותר רחב */
-  min-height: 75vh; /* ✅ גובה מספיק לתוכן */
+  max-width: 850px; 
+  min-height: 75vh; 
   padding: 30px;
-  background: rgba(255, 255, 255, 0.85); /* ✅ רקע שקוף כמו בדפים האחרים */
+  background: rgba(255, 255, 255, 0.85); 
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
 }
 
-/* ✅ כותרות בעיצוב תואם */
 h3 {
   color: #007bff;
   margin-bottom: 15px;
@@ -22,14 +20,12 @@ h3 {
   font-weight: bold;
 }
 
-/* ✅ עיצוב לתוויות */
 label {
   font-weight: bold;
   font-size: 16px;
   color: #333;
 }
 
-/* ✅ שדות קלט גדולים עם עיצוב אחיד */
 input, select {
   width: 100%;
   padding: 14px;
@@ -40,13 +36,11 @@ input, select {
   transition: border 0.3s ease;
 }
 
-/* ✅ שינוי צבע בעת התמקדות */
 input:focus, select:focus {
   border-color: #007bff;
   box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
 }
 
-/* ✅ כפתור שליחה בעיצוב מודרני */
 button {
   width: 100%;
   padding: 14px;
@@ -63,14 +57,12 @@ button:hover {
   background-color: #0056b3;
 }
 
-/* ✅ הודעות בעיצוב תואם */
 .alert {
   font-size: 16px;
   font-weight: bold;
   text-align: center;
 }
 
-/* ✅ סגנון רספונסיבי למובייל */
 @media (max-width: 768px) {
   .send-coins-container {
     width: 90%;
